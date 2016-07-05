@@ -1,0 +1,14 @@
+#/bin/zsh
+
+if [ $# -ne 1 ]; then
+    echo "Invalid Usage.";
+    echo "Usage: find_all [directory]";
+    exit 1;
+fi;
+
+if  ! [ -d $1 ]; then
+    echo "Error: $1 does not exist/is not a directory.";
+    exit 1;
+fi;
+
+find $1 -iname '*.mp4' -or -iname '*.mov' -or -iname '*.mkv' -or -iname '*.wmv' -or -iname '*.avi' -or -iname '*.MOV' -or -iname '*.mpg' -or -iname '*.flv' -or -iname '*.m4v' | while read i; do du -sh "$i"; done | sort -h | tac | cut -f 2- > $1/.reencode

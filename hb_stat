@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+if [ $# -ne 1 ]; then
+    echo "Invalid Usage.";
+    echo "Usage: hb_stat [file]";
+    exit 1;
+fi;
+
+if  ! [ -f $1 ]; then
+    echo "Error: $1 does not exist.";
+    exit 1;
+fi;
+
+printf "Complete: ";
+cat $1 | while read i; do if ! [ -f $i ] && [ -f $i.conv.mkv ]; then echo $i; fi; done | wc -l;
+
+printf "Remaining: ";
+cat $1 | while read i; do if [ -f $i ] && ! [ -f $i.conv.mkv ] ; then echo $i; fi; done | wc -l 
+echo;
+
+echo "Finished: ";
+cat $1 | while read i; do if ! [ -f $i ] && [ -f $i.conv.mkv ]; then echo $i; fi; done | tail -n 5;
+echo;
+
+echo "Current: ";
+cat $1 | while read i; do if [ -f $i ] && [ -f $i.conv.mkv ]; then echo $i; fi; done;
+echo;
+
+echo "Next: ";
+cat $1 | while read i; do if [ -f $i ] && ! [ -f $i.conv.mkv ] ; then echo $i; fi; done | head -n 5;
